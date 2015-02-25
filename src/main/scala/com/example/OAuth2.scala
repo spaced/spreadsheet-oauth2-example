@@ -13,7 +13,7 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 
 object OAuth2 {
   lazy val datastoreFactory= 
-    new FileDataStoreFactory(new java.io.File(System.getProperty("user.home"), ".store/sample-datastore"))
+    new FileDataStoreFactory(new java.io.File(System.getProperty("user.home"), ".store/sample_datastore"))
 
   
   def apply():Credential= {
@@ -21,11 +21,14 @@ object OAuth2 {
     val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
     val SCOPES = java.util.Arrays.asList("https://docs.google.com/feeds","https://spreadsheets.google.com/feeds")
     // load client secrets
-    val clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-        new InputStreamReader(OAuth2.getClass.getResourceAsStream("/client_secrets.json")))        
-    val flow = new GoogleAuthorizationCodeFlow.Builder(
-        httpTransport, JSON_FACTORY, clientSecrets,
-        SCOPES).setDataStoreFactory(datastoreFactory).build()
+    val clientSecrets = GoogleClientSecrets
+      .load(JSON_FACTORY,new InputStreamReader(OAuth2.getClass.getResourceAsStream("/client_secrets.json")))
+        
+    val flow = new GoogleAuthorizationCodeFlow
+      .Builder(httpTransport, JSON_FACTORY, clientSecrets,SCOPES)
+      .setDataStoreFactory(datastoreFactory)
+      .build()
+      
     // authorize
     new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user")
   }

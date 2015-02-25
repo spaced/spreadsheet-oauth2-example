@@ -6,25 +6,22 @@ import com.google.api.client.auth.oauth2.Credential
 import com.google.gdata.client.spreadsheet.SpreadsheetService
 import com.google.gdata.data.spreadsheet.SpreadsheetFeed
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry
-import com.google.gdata.client.spreadsheet.ListQuery
-import com.google.gdata.data.spreadsheet.ListFeed
-import com.google.gdata.data.spreadsheet.ListEntry
 
-object Spreadsheet {
+
+object Spreadsheets {
   
   val SpreadsheetFeedUrl = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full")
   
-  def apply(title:String,credential:Credential)={
+  def refreshCredential(credential:Credential)={
     service.setOAuth2Credentials(credential)
-    // Make a request to the API and get all spreadsheets.
-    val feed = service.getFeed(SpreadsheetFeedUrl,classOf[SpreadsheetFeed])
-    
-    feed.getEntries().asScala.find( _.getTitle.getPlainText==title) match {
-      case Some(s) => new Spreadsheet(s)
-      case _ => throw new NoSuchElementException
-    }
+    this
   }
   
+  def all={
+    feed.getEntries.asScala.map( new Spreadsheet(_))
+  }
+  
+  lazy val feed = service.getFeed(SpreadsheetFeedUrl,classOf[SpreadsheetFeed])
   
   lazy val service:SpreadsheetService=new SpreadsheetService("SpreadsheetIntegration")
   
@@ -34,7 +31,6 @@ object Spreadsheet {
 
 class Spreadsheet(entry:SpreadsheetEntry) {
   
-  val worksheet = entry.getWorksheets().get(0)
-  
+  lazy val worksheets = entry.getWorksheets()
 
 } 

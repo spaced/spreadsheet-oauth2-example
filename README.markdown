@@ -3,11 +3,11 @@
 
 Follow these steps to get started:
 
-1. Git-clone this repository.
+1. clone this repository.
 
 2. go to https://console.developers.google.com/project, create google api project and fetch client_secrets.json 
 
-3. copy client_secrets.json to src/main/scala
+3. download and copy client_secrets.json to src/main/resources
 
 4. start sbt
 

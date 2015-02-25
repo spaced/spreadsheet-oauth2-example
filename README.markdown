@@ -13,7 +13,7 @@ Follow these steps to get started:
 
         $ sbt
 
-5. Start the application:
+5. Start the demo application:
 
-        > re-start
+        > run
 

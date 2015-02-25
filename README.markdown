@@ -7,7 +7,7 @@ Follow these steps to get started:
 
 2. go to https://console.developers.google.com/project, create google api project and fetch client_secrets.json 
 
-3. copy client_secrets.json to src/scala/main
+3. copy client_secrets.json to src/main/scala
 
 4. start sbt
 
